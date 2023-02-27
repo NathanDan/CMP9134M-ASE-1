@@ -46,9 +46,15 @@ def SignUp():
 
 window = Tk() #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
 
+window.resizable(0,0)                         #THE WINDOW WILL NOT ENTER FULLSCREEN MODE
+window.resizable(width=FALSE, height=FALSE)   #THE USER CANNOT CHANGE THE SIZE OF THE LOGIN WINDOW
 window.title ("CMP BANKING SYSTEM")           #GIVING THE LOGIN WINDOW ITS NAME THAT WILL BE DISPLAYED IN THE BAR
-window.geometry("500x400")                    #CONFIGURING THE FIXED SIZE OF THE LOGIN WINDOW WHICH WILL ALWAYS BE THIS SIZE            
+window.geometry("500x600")                    #CONFIGURING THE FIXED SIZE OF THE LOGIN WINDOW WHICH WILL ALWAYS BE THIS SIZE            
 window.configure(background='white')          #CONFIGURING THE BACKGROUND OF THE LOGIN WINDOW TO BE WHITE
+
+logo = PhotoImage(file="CMPBANKINGLOGO.png") #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
+
+Logo = Label (window, image=logo)                                      #CREATING THE LABEL THAT WILL DISPLAY THE GRAND CENTRAL LOGO AT THE TOP OF THE LOGIN WINDOW
 
 S1 = Label(window, text=" ", background="white")                                                      #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 Title = Label (window, text="CMP BANKING SYSTEM LOGIN", font='Helvetica 14 bold', background="white") #CREATING A TITLE FOR THE LOGIN WINDOW
@@ -66,6 +72,7 @@ S4 = Label(window, text=" ", background="white")                                
 signup = Label (window, text="No Account? Why Don't You Sign Up Today By Clicking Below!", font='Helvetica 8', background="white") #CREATING A LABEL THAT STATES A USER CAN SIGN UP FOR AN ACCOUNT
 SignUp = Button (text="     SIGN UP     ", fg="red", command=SignUp)                                                               #CREATING THE SIGN UP BUTTON 
 
+Logo.pack()
 S1.pack()         #DISPLAYING THE SPACE LABEL
 Title.pack()      #DISPLAYING THE TITLE OF THE WINDOW
 S2.pack()         #DISPLAYING THE SPACE LABEL
