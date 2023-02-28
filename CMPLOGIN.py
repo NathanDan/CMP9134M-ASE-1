@@ -19,9 +19,6 @@ import itertools   #ALLOWS ACCESS TO ACCESS TO THE ITERATORS LIBARY FOR EFFICENT
 TRYS = 0           #KEEPING COUNT OF HOW MANY TRYS THE USER HAS HAD WHEN LOGGING IN
 trys = 2           #USED TO CREATE A COUNT DOWN OF HOW MANY MORE ATTEMPTS THE USER HAS FOR THE LOG IN 
 
-username1 = ("Admin")       #USER'S NAME TO ACCESS THE MASTER ACCOUNT
-password1 = ("Develop01")   #USER'S PASSWORD TO ACCES THE MASTER ACCOUNT
-
 def donothing():            #CREATING THE FUNCTION THAT WILL LITERALLY DO NOTHING BY THE USE OF THE 'pass' FUNCTION WITHIN PYTHON
     pass                    #CALLING THE 'pass' FUNCTION TO DO NOTHING
 
@@ -29,20 +26,32 @@ def Login():
     global TRYS      #IMPORTING THE 'TRYS' ARRAY TO KEEP TRACK OF HOW MANY ATTEMPTS THEY HAVE HAD AT LOGGING IN
     global trys      #IMPORTING THE 'trys' ARRAY TO CREATE A COUNT DOWN OF HOW MANY MORE ATTEMPTS THEY HAVE AT LOGGING IN
 
-    if username.get() == username1 and password.get() == password1:       #CHECKING THE USERNAME AND PASSWORD THAT WAS ENTERED AGAINST THE 1ST USERNAME/PASSWORD SET
-            window.destroy()                                              #CLOSING THE LOG IN WINDOW 
-            time.sleep(4)                                                 #WAITING FOR 4 SECONDS
-        
-    else:                                                                                       #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET
-        time.sleep(1)                                                                           #WAITING 1 SECOND
-        messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
-                     You have """+str(trys)+str(" attempts left!") , icon="error")              #DISPLAYING THE ERROR MESSAGE BOX WITH ATTEMPTS LEFT
-        TRYS = TRYS+1                                                                           #ADDS +1 TO THE 'TRYS' ARRAY TO KEEP COUNT
-        trys = trys-1                                                                           #TAKES -1 AWAY FROM THE 'trys' ARRAY TO DISPLAY REMAINDER OF ATTMEPTS 
+    uname = username.get()                                       #TAKING THE USER'S INPUT OF THEIR USERNAME FROM THE ENTRY BOX
+    pword = password.get()                                       #TAKING THE USER'S INPUT OF THEIR PASSWORD FROM THE ENTRY BOX
 
+    for line in open("data.txt","r").readlines():                #READING EACH LINE WITHIN THE 'data' FILE
+        data = line.split()                                      #SPLITTING EACH WORD ON THE SPACE AND STORING THE RESULTS IN A LIST OF TWO STRINGS
+        if uname == data[0] and pword == data[1]:                #IF THE USERNAME AND PASSWORD MATCH THE FOLLOWING TAKES PLACE
+            messagebox.showinfo("welcome", "You Are Logged In!") #DISPLAYS A MESSAGE TO THE USER STATING THEY HAVE LOGGED IN 
+            return True
+            #os.startfile()                                      #STARTING THE MAIN BANKING PROGRAM WITH THE USERS CREDENTIALS
+        
+    else:   #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET THE FOLLOWING STATEMENTS WILL COME INTO PLAY
+        if trys == 0:                                                                                        #IF THE USER HAS 0 TRYS LEFT THEN THE FOLLOWING WILL TAKE PLACE
+            messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
+                     You have """+str(trys)+str(" attempts left! And Have been LOCKED OUT!") , icon="error") #DISPLAYING THE ERROR MESSAGE BOX STATING THEY HAVE BEEN LOCKED OUT
+            window.destroy()                                                                                 #CLOSING THE LOGIN APPLICATION AFTER THE 'OK' HAS BEEN CLICKED ON THE MESSAGE BOX
+             
+        elif trys > 0:                                                                                       #IF THE USER HAS MORE THAN 0 TRYS LEFT THEN THE FOLLOWING ACTIONS TAKE PLACE
+            messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
+                     You have """+str(trys)+str(" attempts left!") , icon="error")                           #DISPLAYING THE ERROR MESSAGE BOX WITH ATTEMPTS LEFT
+            TRYS = TRYS+1                                                                                    #ADDS +1 TO THE 'TRYS' ARRAY TO KEEP COUNT
+            trys = trys-1                                                                                    #TAKES -1 AWAY FROM THE 'trys' ARRAY TO DISPLAY REMAINDER OF ATTMEPTS 
+            return False
+        
 def SignUp():
-    os.startfile("CMPSIGNUP.py")
-    window.destroy()
+    os.startfile("CMPSIGNUP.py") #STARTING THE SIGN UP APPLICATION FOR THE USER TO SIGN UP IF THEY DO NOT HAVE AN ACCOUNT
+    window.destroy()             #CLOSING THE LOGIN APPLICATION 
 
 window = Tk() #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
 
@@ -60,9 +69,9 @@ S1 = Label(window, text=" ", background="white")                                
 Title = Label (window, text="CMP BANKING SYSTEM LOGIN", font='Helvetica 14 bold', background="white") #CREATING A TITLE FOR THE LOGIN WINDOW
 S2 = Label(window, text=" ", background="white")                                                      #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 
-Username = Label (window, text="Username:", font='Helvetica 12', background="white") #CREATING THE LABEL THAT WILL SAY 'Username' ABOVE THE ENTRY BOX
+Username = Label (window, text="Username:", font='Helvetica 10', background="white") #CREATING THE LABEL THAT WILL SAY 'Username' ABOVE THE ENTRY BOX
 username = Entry (window, background="light grey")                                   #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR USERNAME, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
-Password = Label (window, text="Password:", font='Helvetica 12', background="white") #CREATING THE LABEL TAHT WILL SAY 'Password' ABOVE THE ENTRY BOX
+Password = Label (window, text="Password:", font='Helvetica 10', background="white") #CREATING THE LABEL TAHT WILL SAY 'Password' ABOVE THE ENTRY BOX
 password = Entry (window, background="light grey", show="*")                         #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR PASSOWRD, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
 S3 = Label(window, text=" ", background="white")                                     #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 
