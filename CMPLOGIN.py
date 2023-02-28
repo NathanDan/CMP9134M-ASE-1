@@ -54,25 +54,25 @@ window.configure(background='white')          #CONFIGURING THE BACKGROUND OF THE
 
 logo = PhotoImage(file="CMPBANKINGLOGO.png") #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
 
-Logo = Label (window, image=logo)                                      #CREATING THE LABEL THAT WILL DISPLAY THE GRAND CENTRAL LOGO AT THE TOP OF THE LOGIN WINDOW
+Logo = Label (window, image=logo)            #CREATING THE LABEL THAT WILL DISPLAY THE CMP BANKING LOGO AT THE TOP OF THE LOGIN WINDOW
 
 S1 = Label(window, text=" ", background="white")                                                      #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 Title = Label (window, text="CMP BANKING SYSTEM LOGIN", font='Helvetica 14 bold', background="white") #CREATING A TITLE FOR THE LOGIN WINDOW
 S2 = Label(window, text=" ", background="white")                                                      #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 
-Username = Label (window, text="Username:", font='Helvetica 12', background="white")   #CREATING THE LABEL THAT WILL SAY 'Username' ABOVE THE ENTRY BOX
-username = Entry (window, background="light grey")                                  #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR USERNAME, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
-Password = Label (window, text="Password:", font='Helvetica 12', background="white")   #CREATING THE LABEL TAHT WILL SAY 'Password' ABOVE THE ENTRY BOX
-password = Entry (window, background="light grey", show="*")                        #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR PASSOWRD, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
-S3 = Label(window, text=" ", background="white")                                    #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
+Username = Label (window, text="Username:", font='Helvetica 12', background="white") #CREATING THE LABEL THAT WILL SAY 'Username' ABOVE THE ENTRY BOX
+username = Entry (window, background="light grey")                                   #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR USERNAME, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
+Password = Label (window, text="Password:", font='Helvetica 12', background="white") #CREATING THE LABEL TAHT WILL SAY 'Password' ABOVE THE ENTRY BOX
+password = Entry (window, background="light grey", show="*")                         #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR PASSOWRD, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
+S3 = Label(window, text=" ", background="white")                                     #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 
-Login = Button (text="      LOGIN      ", fg="green", command=Login)      #CREATING THE LOGIN BUTTON 
+Login = Button (text="      LOGIN      ", fg="green", command=Login)                 #CREATING THE LOGIN BUTTON 
 
 S4 = Label(window, text=" ", background="white")                                                                                   #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 signup = Label (window, text="No Account? Why Don't You Sign Up Today By Clicking Below!", font='Helvetica 8', background="white") #CREATING A LABEL THAT STATES A USER CAN SIGN UP FOR AN ACCOUNT
 SignUp = Button (text="     SIGN UP     ", fg="red", command=SignUp)                                                               #CREATING THE SIGN UP BUTTON 
 
-Logo.pack()
+Logo.pack()       #DISPLAYING THE LOGO LABEL
 S1.pack()         #DISPLAYING THE SPACE LABEL
 Title.pack()      #DISPLAYING THE TITLE OF THE WINDOW
 S2.pack()         #DISPLAYING THE SPACE LABEL
