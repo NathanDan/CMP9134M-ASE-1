@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-02-17" view-index="0" gantt-divider-location="349" resource-divider-location="300" version="3.2.3247" locale="en_GB">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-02-17" view-index="0" gantt-divider-location="334" resource-divider-location="300" version="3.2.3247" locale="en_GB">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
-        <field id="tpd3" name="Name" width="198" order="0"/>
-        <field id="tpd4" name="Begin date" width="75" order="1"/>
-        <field id="tpd5" name="End date" width="75" order="2"/>
+        <field id="tpd3" name="Name" width="180" order="0"/>
+        <field id="tpd4" name="Begin date" width="69" order="1"/>
+        <field id="tpd5" name="End date" width="69" order="2"/>
         <option id="filter.completedTasks" value="false"/>
         <timeline>
-            <![CDATA[2,1,20,3,22]]>
+            <![CDATA[3,2,1,22,20]]>
         </timeline>
         <option id="color.recent">
             <![CDATA[#00ff00 #00cccc #ffff66 #6666ff #99ff66 #ff9900 #00ffcc #cc0000 #f4f4f4]]>
@@ -40,8 +40,8 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="1" name="Project Duration" color="#8cb6ce" meeting="false" start="2023-02-21" duration="58" complete="10" thirdDate="2023-02-21" thirdDate-constraint="0" expand="true"/>
-        <task id="3" name="Assignment 1 Duration" color="#6666ff" meeting="false" start="2023-02-21" duration="28" complete="20" thirdDate="2023-02-21" thirdDate-constraint="0" priority="3" expand="true">
+        <task id="1" name="Project Duration" color="#8cb6ce" meeting="false" start="2023-02-21" duration="58" complete="16" thirdDate="2023-02-21" thirdDate-constraint="0" expand="true"/>
+        <task id="3" name="Assignment 1 Duration" color="#6666ff" meeting="false" start="2023-02-21" duration="28" complete="33" thirdDate="2023-02-21" thirdDate-constraint="0" priority="3" expand="true">
             <notes>
                 <![CDATA[This will include writting up of the document that will go alongside the program]]>
             </notes>
@@ -62,7 +62,7 @@ Planning Basic Functionalities:
 + View Account Details]]>
             </notes>
         </task>
-        <task id="9" name="Designing the Project" color="#ff9900" meeting="false" start="2023-02-23" duration="4" complete="90" thirdDate="2023-02-13" thirdDate-constraint="0" expand="true">
+        <task id="9" name="Designing the Project" color="#ff9900" meeting="false" start="2023-02-23" duration="4" complete="100" thirdDate="2023-02-13" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Designing Basic Functionalities: 
 + Create user an account 
@@ -72,20 +72,20 @@ Planning Basic Functionalities:
 + View Account Details]]>
             </notes>
         </task>
-        <task id="8" name="Programming" color="#99ff66" meeting="false" start="2023-02-27" duration="5" complete="25" thirdDate="2023-02-13" thirdDate-constraint="0" expand="true"/>
-        <task id="10" name="Testing Feautures (Ongoing)" color="#00ffcc" meeting="false" start="2023-02-27" duration="5" complete="25" thirdDate="2023-02-13" thirdDate-constraint="0" expand="true">
+        <task id="8" name="Programming" color="#99ff66" meeting="false" start="2023-02-27" duration="5" complete="100" thirdDate="2023-02-13" thirdDate-constraint="0" expand="true"/>
+        <task id="10" name="Testing Feautures (Ongoing)" color="#00ffcc" meeting="false" start="2023-02-27" duration="5" complete="100" thirdDate="2023-02-13" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Testing of the programming this will be an ongoing process in parrallel with the programming.]]>
             </notes>
             <depend id="20" type="2" difference="0" hardness="Rubber"/>
         </task>
-        <task id="20" name="GitHub Push" color="#6666ff" meeting="true" start="2023-03-06" duration="0" complete="0" thirdDate="2023-02-17" thirdDate-constraint="0" expand="true">
+        <task id="20" name="GitHub Push" color="#6666ff" meeting="true" start="2023-03-06" duration="0" complete="100" thirdDate="2023-02-17" thirdDate-constraint="0" expand="true">
             <depend id="11" type="2" difference="0" hardness="Rubber"/>
         </task>
-        <task id="11" name="Weekly Progress Review (1)" color="#00cccc" meeting="true" start="2023-03-06" duration="0" complete="0" thirdDate="2023-02-20" thirdDate-constraint="0" expand="true">
+        <task id="11" name="Weekly Progress Review (1)" color="#00cccc" meeting="true" start="2023-03-06" duration="0" complete="100" thirdDate="2023-02-20" thirdDate-constraint="0" expand="true">
             <depend id="32" type="2" difference="0" hardness="Rubber"/>
         </task>
-        <task id="32" name="Design Discussion with Client" color="#00ff00" meeting="true" start="2023-03-06" duration="0" complete="0" thirdDate="2023-02-21" thirdDate-constraint="0" expand="true">
+        <task id="32" name="Design Discussion with Client" color="#00ff00" meeting="true" start="2023-03-06" duration="0" complete="100" thirdDate="2023-02-21" thirdDate-constraint="0" expand="true">
             <depend id="16" type="2" difference="0" hardness="Rubber"/>
         </task>
         <task id="16" name="Design Adaptations and Improvements" color="#ff9900" meeting="false" start="2023-03-06" duration="1" complete="0" thirdDate="2023-02-20" thirdDate-constraint="0" expand="true">
