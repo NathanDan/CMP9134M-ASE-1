@@ -19,38 +19,45 @@ import itertools   #ALLOWS ACCESS TO ACCESS TO THE ITERATORS LIBARY FOR EFFICENT
 TRYS = 0           #KEEPING COUNT OF HOW MANY TRYS THE USER HAS HAD WHEN LOGGING IN
 trys = 2           #USED TO CREATE A COUNT DOWN OF HOW MANY MORE ATTEMPTS THE USER HAS FOR THE LOG IN 
 
-def donothing():            #CREATING THE FUNCTION THAT WILL LITERALLY DO NOTHING BY THE USE OF THE 'pass' FUNCTION WITHIN PYTHON
-    pass                    #CALLING THE 'pass' FUNCTION TO DO NOTHING
+def donothing():   #CREATING THE FUNCTION THAT WILL LITERALLY DO NOTHING BY THE USE OF THE 'pass' FUNCTION WITHIN PYTHON
+    pass           #CALLING THE 'pass' FUNCTION TO DO NOTHING
 
 def Login():
-    global TRYS      #IMPORTING THE 'TRYS' ARRAY TO KEEP TRACK OF HOW MANY ATTEMPTS THEY HAVE HAD AT LOGGING IN
-    global trys      #IMPORTING THE 'trys' ARRAY TO CREATE A COUNT DOWN OF HOW MANY MORE ATTEMPTS THEY HAVE AT LOGGING IN
-
-    uname = username.get()                                       #TAKING THE USER'S INPUT OF THEIR USERNAME FROM THE ENTRY BOX
-    pword = password.get()                                       #TAKING THE USER'S INPUT OF THEIR PASSWORD FROM THE ENTRY BOX
-
+    global TRYS    #IMPORTING THE 'TRYS' ARRAY TO KEEP TRACK OF HOW MANY ATTEMPTS THEY HAVE HAD AT LOGGING IN
+    global trys    #IMPORTING THE 'trys' ARRAY TO CREATE A COUNT DOWN OF HOW MANY MORE ATTEMPTS THEY HAVE AT LOGGING IN
+    
+    uname = username.get()                                #TAKING THE USER'S INPUT OF THEIR USERNAME FROM THE ENTRY BOX
+    pword = password.get()                                #TAKING THE USER'S INPUT OF THEIR PASSWORD FROM THE ENTRY BOX
+    
     for line in open("data.txt","r").readlines():                #READING EACH LINE WITHIN THE 'data' FILE
         data = line.split()                                      #SPLITTING EACH WORD ON THE SPACE AND STORING THE RESULTS IN A LIST OF TWO STRINGS
+        name = data[2]                                           #
+        ID = data[0]
         if uname == data[0] and pword == data[1]:                #IF THE USERNAME AND PASSWORD MATCH THE FOLLOWING TAKES PLACE
             messagebox.showinfo("welcome", "You Are Logged In!") #DISPLAYS A MESSAGE TO THE USER STATING THEY HAVE LOGGED IN 
-            return True
-            #os.startfile()                                      #STARTING THE MAIN BANKING PROGRAM WITH THE USERS CREDENTIALS
-        
-    else:   #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET THE FOLLOWING STATEMENTS WILL COME INTO PLAY
-        if trys == 0:                                                                                        #IF THE USER HAS 0 TRYS LEFT THEN THE FOLLOWING WILL TAKE PLACE
-            messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
-                     You have """+str(trys)+str(" attempts left! And Have been LOCKED OUT!") , icon="error") #DISPLAYING THE ERROR MESSAGE BOX STATING THEY HAVE BEEN LOCKED OUT
-            window.destroy()                                                                                 #CLOSING THE LOGIN APPLICATION AFTER THE 'OK' HAS BEEN CLICKED ON THE MESSAGE BOX
-             
-        elif trys > 0:                                                                                       #IF THE USER HAS MORE THAN 0 TRYS LEFT THEN THE FOLLOWING ACTIONS TAKE PLACE
-            messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
-                     You have """+str(trys)+str(" attempts left!") , icon="error")                           #DISPLAYING THE ERROR MESSAGE BOX WITH ATTEMPTS LEFT
-            TRYS = TRYS+1                                                                                    #ADDS +1 TO THE 'TRYS' ARRAY TO KEEP COUNT
-            trys = trys-1                                                                                    #TAKES -1 AWAY FROM THE 'trys' ARRAY TO DISPLAY REMAINDER OF ATTMEPTS 
-            return False
+            with open("temp.txt", "w") as file:                  #WITH THE TEMP FILE OPEN THE FOLLOWING WILL BE WRITTEN TO TEMP FILE
+                file.write(name)                                 #GETTING THE USERS NAME ASSOCIATED WITH THE ACCOUNT AND WRTITING IT TO THE TEMP FILE
+                file.write(" ")                                  #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+                file.write(ID)                                   #GETTING THE USERS NAME ASSOCIATED WITH THE ACCOUNT AND WRTITING IT TO THE TEMP FILE
+                file.close()                                     #CLOSING THE FILE AFTER ALL OF THE DATA HAS BEEN WRITTEN TO THE TEMP FILE
+            os.system('CMPBS.py')                                #STARTING THE MAIN BANKING PROGRAM WITH THE USERS CREDENTIALS
+            window.destroy()
+            
+        else:   #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET THE FOLLOWING STATEMENTS WILL COME INTO PLAY
+            if trys == 0:                                                                                        #IF THE USER HAS 0 TRYS LEFT THEN THE FOLLOWING WILL TAKE PLACE
+                messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
+                         You have """+str(trys)+str(" attempts left! And Have been LOCKED OUT!") , icon="error") #DISPLAYING THE ERROR MESSAGE BOX STATING THEY HAVE BEEN LOCKED OUT
+                window.destroy()                                                                                 #CLOSING THE LOGIN APPLICATION AFTER THE 'OK' HAS BEEN CLICKED ON THE MESSAGE BOX
+                 
+            elif trys > 0:                                                                                       #IF THE USER HAS MORE THAN 0 TRYS LEFT THEN THE FOLLOWING ACTIONS TAKE PLACE
+                messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
+                         You have """+str(trys)+str(" attempts left!") , icon="error")                           #DISPLAYING THE ERROR MESSAGE BOX WITH ATTEMPTS LEFT
+                TRYS = TRYS+1                                                                                    #ADDS +1 TO THE 'TRYS' ARRAY TO KEEP COUNT
+                trys = trys-1                                                                                    #TAKES -1 AWAY FROM THE 'trys' ARRAY TO DISPLAY REMAINDER OF ATTMEPTS 
+                return False
         
 def SignUp():
-    os.startfile("CMPSIGNUP.py") #STARTING THE SIGN UP APPLICATION FOR THE USER TO SIGN UP IF THEY DO NOT HAVE AN ACCOUNT
+    os.system('CMPSIGNUP.py') #STARTING THE SIGN UP APPLICATION FOR THE USER TO SIGN UP IF THEY DO NOT HAVE AN ACCOUNT
     window.destroy()             #CLOSING THE LOGIN APPLICATION 
 
 window = Tk() #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
