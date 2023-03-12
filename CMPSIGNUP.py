@@ -1,6 +1,6 @@
 #CMP9134M ADVANCED SOFTWARE ENGINEERING - SIGN UP
 #NATHAN JONES
-#FEB 2023
+#MAR/FEB 2023
 
 from tkinter import messagebox, Label, Button, FALSE, Tk, Entry    #ALLOWING FOR TKINTER TO BE ACCESSED/UTILISED FOR THE PROGRAM TO USE ALL OF ITS FUNCTIONS AND GIVING THE PROGRAM A GUI
 from tkinter import *                                              #ALLOWING FOR ALL OF TKINTER'S MODULES TO BE IMPORTED 
@@ -26,6 +26,10 @@ def SignUp():
         file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
         file.write(sname.get())         #GETTING THE USERS INPUT OF THEIR LAST NAME AND APPEDEDING IT TO THE DATA FILE  
         file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+        file.write(accnum.get())        #GETTING THE USERS INPUT OF THEIR ACCOUNT NUMBER AND APPEDEDING IT TO THE DATA FILE
+        file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+        file.write(accname.get())       #GETTING THE USERS INPUT OF THEIR ACCOUNT NAME AND APPEDEDING IT TO THE DATA FILE
+        file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
         file.write(dob.get())           #GETTING THE USERS INPUT OF THEIR DOB AND APPEDEDING IT TO THE DATA FILE  
         file.write("\n")                #WRITING AN EMPTY LINE AFTER THE USERS INPUTS FOR THE NEXT USERS ENTRIES
         file.close()                    #CLOSING THE FILE AFTER ALL OF THE DATA HAS BEEN APPENED TO THE DATA FILE
@@ -40,7 +44,7 @@ window = Tk() #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
 window.resizable(0,0)                         #THE WINDOW WILL NOT ENTER FULLSCREEN MODE
 window.resizable(width=FALSE, height=FALSE)   #THE USER CANNOT CHANGE THE SIZE OF THE LOGIN WINDOW
 window.title ("CMP BANKING SYSTEM SIGN UP")   #GIVING THE LOGIN WINDOW ITS NAME THAT WILL BE DISPLAYED IN THE BAR
-window.geometry("500x600")                    #CONFIGURING THE FIXED SIZE OF THE LOGIN WINDOW WHICH WILL ALWAYS BE THIS SIZE            
+window.geometry("500x700")                    #CONFIGURING THE FIXED SIZE OF THE LOGIN WINDOW WHICH WILL ALWAYS BE THIS SIZE            
 window.configure(background='white')          #CONFIGURING THE BACKGROUND OF THE LOGIN WINDOW TO BE WHITE
 
 logo = PhotoImage(file="CMPBANKINGLOGO.png")  #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
@@ -61,6 +65,11 @@ Username = Label (window, text="Create Username:", font='Helvetica 10', backgrou
 username = Entry (window, background="light grey")                                                      #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR USERNAME, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
 Password = Label (window, text="Create Password:", font='Helvetica 10', background="white")             #CREATING THE LABEL TAHT WILL SAY 'Password' ABOVE THE ENTRY BOX
 password = Entry (window, background="light grey", show="*")                                            #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR PASSOWRD, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
+ACCNUM = Label (window, text="Enter Account Number:", font='Helvetica 10', background="white")              #CREATING THE LABEL THAT WILL SAY DOB ABOVE THE ENTRY BOX
+accnum = Entry (window, background="light grey")                                                           #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR DOB, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX
+ACCNAME = Label (window, text="Enter Account Name:", font='Helvetica 10', background="white")              #CREATING THE LABEL THAT WILL SAY DOB ABOVE THE ENTRY BOX
+accname = Entry (window, background="light grey")                                                           #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR DOB, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX
+
 S3 = Label(window, text=" ", background="white")                                                        #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 
 SignUp = Button (text="     SIGN UP     ", fg="red", command=SignUp) #CREATING THE SIGN UP BUTTON THAT WILL BE DISPLAYED
@@ -82,12 +91,18 @@ Username.pack()     #DISPLAYING THE USERNAME LABEL THAT WILL SIT ABOVE THE ENTRY
 username.pack()     #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR USERNAME
 Password.pack()     #DISPLAYING THE PASSWORD LABEL THAT WILL SIT ABOVE THE ENTRY BOX
 password.pack()     #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR PASSWORD
+ACCNUM.pack()       #DISPLAYING THE ACCOUNT NUMBER LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+accnum.pack()       #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR ACCOUNT NUMBER
+ACCNAME.pack()      #DISPLAYING THE ACCOUNT NAME LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+accname.pack()      #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR ACCOUNT NAME
 S3.pack()           #DISPLAYING THE SPACE LABEL
 SignUp.pack()       #DISPLAYING THE SIGN UP BUTTON
 
 
 
+
+
 #CMP9134M ADVANCED SOFTWARE ENGINEERING - SIGN UP
 #NATHAN JONES
-#FEB 2023
+#MAR/FEB 2023
 
