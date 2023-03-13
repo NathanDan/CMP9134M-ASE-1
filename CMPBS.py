@@ -26,11 +26,11 @@ s.connect(("8.8.8.8", 80))                           #CONNECTS TO THE IP ADDRESS
 
 def MainMenu():
     
-    Menu = Tk()                               #CREATING THE TKINTER WINDOW THAT WILL HOUSE THE GUI TABS FOR THE MAIN APPLICATION
-    Menu.title("CMP Banking System")          #CREATING THE TITLE OF THE WINDOW 
-    Menu.resizable(width=FALSE, height=FALSE) #MAKING IT SO THAT THE WINDOW CANNOT BE CHANGE IN SIZE AND WILL BE THE SAME SIZE ON ALL SYSTEMS 
-    Menu.geometry("1400x700")                 #SETTING THE WINDOW TO BE A SPECIFIC GEOMETRY FOR ALL SYSTEMS
-    tabControl = ttk.Notebook(Menu)           #MAKING THETKINTER WINDOW A NOTEBOOK SO THERE ARE TABS AT THE TOP AND THE USER CAN GO INBETWEEN TABS
+    Menu = Tk()                                      #CREATING THE TKINTER WINDOW THAT WILL HOUSE THE GUI TABS FOR THE MAIN APPLICATION
+    Menu.title("CMP Banking System")                 #CREATING THE TITLE OF THE WINDOW 
+    Menu.resizable(width=FALSE, height=FALSE)        #MAKING IT SO THAT THE WINDOW CANNOT BE CHANGE IN SIZE AND WILL BE THE SAME SIZE ON ALL SYSTEMS 
+    Menu.geometry("1400x700")                        #SETTING THE WINDOW TO BE A SPECIFIC GEOMETRY FOR ALL SYSTEMS
+    tabControl = ttk.Notebook(Menu)                  #MAKING THETKINTER WINDOW A NOTEBOOK SO THERE ARE TABS AT THE TOP AND THE USER CAN GO INBETWEEN TABS
 
     style = ttk.Style()                                                  #CREATING A VARIABLE CALLED STYLE THAT WILL BE CALLED LATER ON IN THE PROGRAM
     style.configure("W.TFrame", foreground="white", background="white")  #CONFIGURING THE STYLE OF THE APPLICATION TO HAVE A WHITE BACKGROUND AND FOREGROUND
@@ -56,14 +56,25 @@ def MainMenu():
     
     WelcomeMsg = Label(WelcomeTab, text="Welcome " +str(name)+", please select the tab above for what area of your account you would like to see.", font='Helvetica 10', bg="white") #CREATING THE LABEL THAT ACTS AS A PERSONALISED WELCOME MESSAGE
 
-    S.pack()           #DISPLAYING THE SPACE LABEL
-    Logo.pack()        #DISPLAYING THE CMP BANKING SYSTEM LOGO
-    S1.pack()          #DISPLAYING THE SPACE LABEL
-    Time.pack()        #DISPLAYING THE CURRENT DATE AND TIME
-    S2.pack()          #DISPLAYING THE SPACE LABEL
-    SubTitle.pack()    #DISPLAYING THE SUBTITLE TO THE USER
-    S3.pack()          #DISPLAYING THE SPACE LABEL
-    WelcomeMsg.pack()  #DISPLAYING THE PERSONALISED WELCOME MESSAGE TO THE USER
+    def LogOut():
+
+        messagebox.showinfo("logged out", "You Are Logged Out!")      #DISPLAYS A MESSAGE TO THE USER STATING THEY HAVE LOGGED IN
+        with open("temp.txt", "w") as file:                           #WITH THE TEMP FILE OPEN THE FOLLOWING WILL BE WRITTEN TO TEMP FILE - BY WRITING A SPACE IT WILL CLEAR THE TEMP FILE SO ITS BLANK FOR THE NEXT LOG IN
+                file.write(" ")                                       #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+                file.close()                                          #CLOSING THE FILE AFTER ALL OF THE DATA HAS BEEN WRITTEN TO THE TEMP FILE 
+        Menu.destroy()                                                #CLOSING THE MAIN WINDOW AFTER A SUCCESSFUL LOG OUT
+    
+    LogOutButton = Button(WelcomeTab, text="Log Out", command=LogOut) #CREATING THE LOG OUT BUTTON THAT IS ON THE WELCOME PAGE SO THAT THE USER CAN LOG OUT WHEN THEY ARE DONE
+
+    S.pack()                            #DISPLAYING THE SPACE LABEL
+    Logo.pack()                         #DISPLAYING THE CMP BANKING SYSTEM LOGO
+    S1.pack()                           #DISPLAYING THE SPACE LABEL
+    Time.pack()                         #DISPLAYING THE CURRENT DATE AND TIME
+    S2.pack()                           #DISPLAYING THE SPACE LABEL
+    SubTitle.pack()                     #DISPLAYING THE SUBTITLE TO THE USER
+    S3.pack()                           #DISPLAYING THE SPACE LABEL
+    WelcomeMsg.pack()                   #DISPLAYING THE PERSONALISED WELCOME MESSAGE TO THE USER
+    LogOutButton.place(x=1300, y=625)   #PLACING THE LOG OUT BUTTON IN THE BOTTOM LEFT OF THE TAB
     
     BalenceTab = ttk.Frame(style="W.TFrame") #CREATING AND CONFIGURING THE BALANCE TAB TO HAVE THE WHITE COLOUR SCHEME  
     file = "acc\\"+"\\"+str(acc)+".csv"      #TAKING THE USERS ACCOUNT NUMBER THAT HAS BEEN PASSED THROUGH FROM THE LOGIN PROGRAM TO THE MAIN PROGRAM, THIS ACCOUNT NUMBER IS THEN ADDED TO A STRING TO CREATE THE FILE PATH OF THE USERS ACCOUNT DETAILS
@@ -80,30 +91,30 @@ def MainMenu():
         for row in Last20Rows:                                                                                   #FOR EACH OF THE LAST 20 ROWS THE FOLLOWING TAKES PLACE
             Last15Table.insert("","end",values=row)                                                              #ASSIGN EACH ROW OF THE FILE TO THE TABLE SO IT WILL BE DISPLAYED
 
-        S = Label(BalenceTab, text=" ", background="white")                                                #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE INBETWEEN
-        Title = Label(BalenceTab, text="Current Account Balance", font='Helvetica 14 bold', bg="white")    #CREATING THE SYSTEM DETAILS TITLE FOR THE TAB
-        S1 = Label(BalenceTab, text=" ", background="white")                                               #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE INBETWEEN
+        S = Label(BalenceTab, text=" ", background="white")                                                      #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE INBETWEEN
+        Title = Label(BalenceTab, text="Current Account Balance", font='Helvetica 14 bold', bg="white")          #CREATING THE SYSTEM DETAILS TITLE FOR THE TAB
+        S1 = Label(BalenceTab, text=" ", background="white")                                                     #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE INBETWEEN
         Details = Label(BalenceTab,
                         text="Below is the current account balance of the "+str(acc)+" "+str(accname)+" Account, along with the transactions in the past 20 days.",
-                        font='Helvetica 11', bg="white")                                                   #CREATING THE LABEL THAT ACTS AS A DESCRIPTION FOR THE TAB
+                        font='Helvetica 11', bg="white")                                                         #CREATING THE LABEL THAT ACTS AS A DESCRIPTION FOR THE TAB
         
-        BalenceSheet = plt.Figure(figsize=(6,5),dpi=90)                                                    #CREATING THE FIGURE THAT WILL BE USED TO HOUSE THE GRAPH FOR THE BALANCE
-        balsheet = pd.read_csv(file, encoding='ISO-8859-1', parse_dates=['Month'], index_col="Month")      #READING THE DATA FROM THE ACCOUNT THAT HAS BEEN GIVEN TO THE APPLICATION
-        ax = BalenceSheet.add_subplot(111)                                                                 #ADDING THE GRAPH TO THE FIGURE AND TO THE TAB 
-        BALSHEET = FigureCanvasTkAgg(BalenceSheet, BalenceTab)                                             #DISPLAYING THE GRAPH IN THE TKINTER TAB FOR THE BALANCE OF THE ACCOUNT
-        BALSHEET.get_tk_widget().place(x=120, y=100)                                                       #PLACING THE GRAPH WITHIN THE TAB OVER TO THE LEFT OF THE TAB
+        BalenceSheet = plt.Figure(figsize=(6,5),dpi=90)                                                          #CREATING THE FIGURE THAT WILL BE USED TO HOUSE THE GRAPH FOR THE BALANCE
+        balsheet = pd.read_csv(file, encoding='ISO-8859-1', parse_dates=['Month'], index_col="Month")            #READING THE DATA FROM THE ACCOUNT THAT HAS BEEN GIVEN TO THE APPLICATION
+        ax = BalenceSheet.add_subplot(111)                                                                       #ADDING THE GRAPH TO THE FIGURE AND TO THE TAB 
+        BALSHEET = FigureCanvasTkAgg(BalenceSheet, BalenceTab)                                                   #DISPLAYING THE GRAPH IN THE TKINTER TAB FOR THE BALANCE OF THE ACCOUNT
+        BALSHEET.get_tk_widget().place(x=120, y=100)                                                             #PLACING THE GRAPH WITHIN THE TAB OVER TO THE LEFT OF THE TAB
         
-        Last15Table.place(x=820, y=120)                                                                    #PLACING THE TABLE WITHIN THE TAB LOCATED TO TEH RIGHT OF THE GRAPH
+        Last15Table.place(x=820, y=120)                                                                          #PLACING THE TABLE WITHIN THE TAB LOCATED TO TEH RIGHT OF THE GRAPH
         
-        ax.set_ylabel("Current Balence in £")                                                              #SETTING THE Y LABEL ON THE GRAPH TO BE "Current Balence in £"
-        balsheet.plot(color='#d5d8dc', title='Current Balence Within The Account',ax=ax)                   #GIVING THE GRAPH A TITLE AND COLOUR SCHEME
+        ax.set_ylabel("Current Balence in £")                                                                    #SETTING THE Y LABEL ON THE GRAPH TO BE "Current Balence in £"
+        balsheet.plot(color='#d5d8dc', title='Current Balence Within The Account',ax=ax)                         #GIVING THE GRAPH A TITLE AND COLOUR SCHEME
 
-        B1 = Button(BalenceTab, text="Refresh", command=Balence)                                           #CREATING A BUTTON THAT WILL REFRESH THE GRAPH
+        B1 = Button(BalenceTab, text="Refresh", command=Balence)                                                 #CREATING A BUTTON THAT WILL REFRESH THE GRAPH
 
         S.pack()              #DISPLAYING THE SPACE LABEL
         Title.pack()          #DISPLAYING THE TITLE OF THE TAB
         S2.pack()             #DISPLAYING THE SPACE LABEL
-        Details.              #DISPLAYING THE DESCRIPTION OF THE TAB
+        Details.pack()        #DISPLAYING THE DESCRIPTION OF THE TAB
         B1.place(x=680, y=80) #PLACING THE BUTTON WITHIN THE TAB 
 
     Balence()                 #RUNNING THE FUNCTION SO IT IS ALREADY LOADED UP
@@ -148,8 +159,195 @@ def MainMenu():
     tabControl.add(BalenceTab, text='Balence Sheet')      #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE BALANCE SHEET TAB
     tabControl.add(SysDetailsTab, text='System Details')  #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE SYSTEM DETAILS TAB
     tabControl.pack(expand = 1, fill ="both")             #DISPLAYING THE TABS ALONG THE TOP
+
+# SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #
+
+def SignUpApp():
+
+    def SignUp():
+
+        with open("data.txt", "a") as file: #WITH THE DATA FILE OPEN THE FOLLOWING WILL BE APPEDED TO DATA FILE
+            file.write(username.get())      #GETTING THE USERS INPUT OF THEIR USERNAME AND APPEDEDING IT TO THE DATA FILE 
+            file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+            file.write(password.get())      #GETTING THE USERS INPUT OF THEIR PASSWORD AND APPEDEDING IT TO THE DATA FILE  
+            file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+            file.write(fname.get())         #GETTING THE USERS INPUT OF THEIR FIRST NAME AND APPEDEDING IT TO THE DATA FILE  
+            file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+            file.write(sname.get())         #GETTING THE USERS INPUT OF THEIR LAST NAME AND APPEDEDING IT TO THE DATA FILE  
+            file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+            file.write(accnum.get())        #GETTING THE USERS INPUT OF THEIR ACCOUNT NUMBER AND APPEDEDING IT TO THE DATA FILE
+            file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+            file.write(accname.get())       #GETTING THE USERS INPUT OF THEIR ACCOUNT NAME AND APPEDEDING IT TO THE DATA FILE
+            file.write(" ")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+            file.write(dob.get())           #GETTING THE USERS INPUT OF THEIR DOB AND APPEDEDING IT TO THE DATA FILE  
+            file.write("\n")                #WRITING AN EMPTY LINE AFTER THE USERS INPUTS FOR THE NEXT USERS ENTRIES
+            file.close()                    #CLOSING THE FILE AFTER ALL OF THE DATA HAS BEEN APPENED TO THE DATA FILE
+            
+            messagebox.showinfo("information", "Your account has been CREATED!") #DISPLAYING A MESSAGE STATING THAT THEIR ACCOUNT HAS BEEN CREATED
+            signupwin.destroy()                                                  #CLOSING THE SIGN UP WINDOW AS THE LOGIN WINDOW OPENS
+            Login()                                                              #ONCE 'OK' HAS BEEN CLICKED THE LOGIN APPLICATION WILL BE STARTED
+
+
+    signupwin = Tk() #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
+
+    signupwin.resizable(0,0)                         #THE WINDOW WILL NOT ENTER FULLSCREEN MODE
+    signupwin.resizable(width=FALSE, height=FALSE)   #THE USER CANNOT CHANGE THE SIZE OF THE LOGIN WINDOW
+    signupwin.title ("CMP BANKING SYSTEM SIGN UP")   #GIVING THE LOGIN WINDOW ITS NAME THAT WILL BE DISPLAYED IN THE BAR
+    signupwin.geometry("500x700")                    #CONFIGURING THE FIXED SIZE OF THE LOGIN WINDOW WHICH WILL ALWAYS BE THIS SIZE            
+    signupwin.configure(background='white')          #CONFIGURING THE BACKGROUND OF THE LOGIN WINDOW TO BE WHITE
+
+    logo = PhotoImage(file="CMPBANKINGLOGO.png")     #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
+
+    Logo = Label (signupwin, image=logo)             #CREATING THE LABEL THAT WILL DISPLAY THE CMP BANKING LOGO AT THE TOP OF THE LOGIN WINDOW
+
+    S1 = Label(signupwin, text=" ", background="white")                                                        #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
+    Title = Label (signupwin, text="CMP BANKING SYSTEM SIGN UP", font='Helvetica 16 bold', background="white") #CREATING A TITLE FOR THE LOGIN WINDOW
+    S2 = Label(signupwin, text=" ", background="white")                                                        #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
+
+    FName = Label (signupwin, text="Enter First Name:", font='Helvetica 10', background="white")               #CREATING THE LABEL THAT WILL SAY FIRST NAME ABOVE THE ENTRY BOX
+    fname = Entry (signupwin, background="light grey")                                                         #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR FIRST NAME, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX
+    SName = Label (signupwin, text="Enter Last Name:", font='Helvetica 10', background="white")                #CREATING THE LABEL THAT WILL SAY LAST NAME ABOVE THE ENTRY BOX
+    sname = Entry (signupwin, background="light grey")                                                         #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR LAST NAME, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX
+    DOB = Label (signupwin, text="Enter Date of Birth:", font='Helvetica 10', background="white")              #CREATING THE LABEL THAT WILL SAY DOB ABOVE THE ENTRY BOX
+    dob = Entry (signupwin, background="light grey")                                                           #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR DOB, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX
+    Username = Label (signupwin, text="Create Username:", font='Helvetica 10', background="white")             #CREATING THE LABEL THAT WILL SAY 'Username' ABOVE THE ENTRY BOX
+    username = Entry (signupwin, background="light grey")                                                      #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR USERNAME, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
+    Password = Label (signupwin, text="Create Password:", font='Helvetica 10', background="white")             #CREATING THE LABEL TAHT WILL SAY 'Password' ABOVE THE ENTRY BOX
+    password = Entry (signupwin, background="light grey", show="*")                                            #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR PASSOWRD, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
+    ACCNUM = Label (signupwin, text="Enter Account Number:", font='Helvetica 10', background="white")          #CREATING THE LABEL THAT WILL SAY DOB ABOVE THE ENTRY BOX
+    accnum = Entry (signupwin, background="light grey")                                                        #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR DOB, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX
+    ACCNAME = Label (signupwin, text="Enter Account Name:", font='Helvetica 10', background="white")           #CREATING THE LABEL THAT WILL SAY DOB ABOVE THE ENTRY BOX
+    accname = Entry (signupwin, background="light grey")                                                       #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR DOB, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX
+
+    S3 = Label(signupwin, text=" ", background="white")                                                        #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
+
+    SignUp = Button (text="     SIGN UP     ", fg="red", command=SignUp) #CREATING THE SIGN UP BUTTON THAT WILL BE DISPLAYED
+
+    dob.insert(END,'DD/MM/YYYY')                                         #TELLING THE USER THE FORMAT OF THE ENTRY
+    username.insert(END,'Your Email Address')                            #TELLING THE USER WHAT TO ENTER FOR THE USERNAME
+
+    Logo.pack()         #DISPLAYING THE LOGO LABEL
+    S1.pack()           #DISPLAYING THE SPACE LABEL
+    Title.pack()        #DISPLAYING THE TITLE OF THE WINDOW
+    S2.pack()           #DISPLAYING THE SPACE LABEL
+    FName.pack()        #DISPLAYING THE FIRST NAME LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+    fname.pack()        #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR FIRST NAME
+    SName.pack()        #DISPLAYING THE LAST NAME LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+    sname.pack()        #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR LAST NAME
+    DOB.pack()          #DISPLAYING THE DOB LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+    dob.pack()          #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR DOB
+    Username.pack()     #DISPLAYING THE USERNAME LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+    username.pack()     #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR USERNAME
+    Password.pack()     #DISPLAYING THE PASSWORD LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+    password.pack()     #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR PASSWORD
+    ACCNUM.pack()       #DISPLAYING THE ACCOUNT NUMBER LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+    accnum.pack()       #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR ACCOUNT NUMBER
+    ACCNAME.pack()      #DISPLAYING THE ACCOUNT NAME LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+    accname.pack()      #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR ACCOUNT NAME
+    S3.pack()           #DISPLAYING THE SPACE LABEL
+    SignUp.pack()       #DISPLAYING THE SIGN UP BUTTON
+
+
+# LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #
+
+
+TRYS = 0           #KEEPING COUNT OF HOW MANY TRYS THE USER HAS HAD WHEN LOGGING IN
+trys = 2           #USED TO CREATE A COUNT DOWN OF HOW MANY MORE ATTEMPTS THE USER HAS FOR THE LOG IN 
+
+def donothing():   #CREATING THE FUNCTION THAT WILL LITERALLY DO NOTHING BY THE USE OF THE 'pass' FUNCTION WITHIN PYTHON
+    pass           #CALLING THE 'pass' FUNCTION TO DO NOTHING
+
+def Login():
+    global TRYS    #IMPORTING THE 'TRYS' ARRAY TO KEEP TRACK OF HOW MANY ATTEMPTS THEY HAVE HAD AT LOGGING IN
+    global trys    #IMPORTING THE 'trys' ARRAY TO CREATE A COUNT DOWN OF HOW MANY MORE ATTEMPTS THEY HAVE AT LOGGING IN
     
-MainMenu()
+    uname = username.get()      #TAKING THE USER'S INPUT OF THEIR USERNAME FROM THE ENTRY BOX
+    pword = password.get()      #TAKING THE USER'S INPUT OF THEIR PASSWORD FROM THE ENTRY BOX
+    accnum = accountnum.get()   #TAKING THE USER'S INPUT OF THEIR ACCOUNT NUMBER FROM THE ENTRY BOX
+
+    for line in open("data.txt","r").readlines():                       #READING EACH LINE WITHIN THE 'data' FILE
+        data = line.split()                                             #SPLITTING EACH WORD ON THE SPACE AND STORING THE RESULTS IN A LIST OF TWO STRINGS
+        name = data[2]                                                  #ASSIGING THE 3RD ELEMENT IN THE FILE TO BE 'name'
+        ID = data[0]                                                    #ASSIGING THE 1ST ELEMENT IN THE FILE TO BE 'ID'
+        acc = data[4]                                                   #ASSIGING THE 5TH ELEMENT IN THE FILE TO BE 'acc'
+        accname = data[5]
+        if uname == data[0] and pword == data[1] and accnum == data[4]: #IF THE USERNAME AND PASSWORD MATCH THE FOLLOWING TAKES PLACE
+            messagebox.showinfo("welcome", "You Are Logged In!")        #DISPLAYS A MESSAGE TO THE USER STATING THEY HAVE LOGGED IN 
+            with open("temp.txt", "w") as file:                         #WITH THE TEMP FILE OPEN THE FOLLOWING WILL BE WRITTEN TO TEMP FILE
+                file.write(name)                                        #GETTING THE USERS NAME ASSOCIATED WITH THE ACCOUNT AND WRTITING IT TO THE TEMP FILE
+                file.write(" ")                                         #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+                file.write(ID)                                          #GETTING THE USERS NAME ASSOCIATED WITH THE ACCOUNT AND WRTITING IT TO THE TEMP FILE
+                file.write(" ")                                         #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+                file.write(acc)                                         #GETTING THE USERS ACCOUNT NUMBER ASSOCIATED WITH THE ACCOUNT AND WRTITING IT TO THE TEMP FILE
+                file.write(" ")                                         #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+                file.write(accname)                                     #GETTING THE USERS ACCOUNT NAME ASSOCIATED WITH THE ACCOUNT AND WRTITING IT TO THE TEMP FILE
+                file.close()                                            #CLOSING THE FILE AFTER ALL OF THE DATA HAS BEEN WRITTEN TO THE TEMP FILE                                
+            window.destroy()                                            #DESTROYS THE LOGIN WINDOW BEFORE OPENING THE MAIN APPLICATION
+            MainMenu()                                                  #STARTING THE MAIN BANKING PROGRAM WITH THE USERS CREDENTIALS
+            
+        elif uname != data[0] and pword != data[1] and accnum != data[4]:   #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET THE FOLLOWING STATEMENTS WILL COME INTO PLAY
+            if trys == 0:                                                                                        #IF THE USER HAS 0 TRYS LEFT THEN THE FOLLOWING WILL TAKE PLACE
+                messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
+                         You have """+str(trys)+str(" attempts left! And Have been LOCKED OUT!") , icon="error") #DISPLAYING THE ERROR MESSAGE BOX STATING THEY HAVE BEEN LOCKED OUT
+                window.destroy()                                                                                 #CLOSING THE LOGIN APPLICATION AFTER THE 'OK' HAS BEEN CLICKED ON THE MESSAGE BOX
+                 
+            elif trys > 0:                                                                                       #IF THE USER HAS MORE THAN 0 TRYS LEFT THEN THE FOLLOWING ACTIONS TAKE PLACE
+                messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
+                         You have """+str(trys)+str(" attempts left!") , icon="error")                           #DISPLAYING THE ERROR MESSAGE BOX WITH ATTEMPTS LEFT
+                TRYS = TRYS+1                                                                                    #ADDS +1 TO THE 'TRYS' ARRAY TO KEEP COUNT
+                trys = trys-1                                                                                    #TAKES -1 AWAY FROM THE 'trys' ARRAY TO DISPLAY REMAINDER OF ATTMEPTS 
+
+def SignUpLoginWin():
+    window.destroy()             #CLOSING THE LOGIN APPLICATION
+    SignUpApp()#STARTING THE SIGN UP APPLICATION FOR THE USER TO SIGN UP IF THEY DO NOT HAVE AN ACCOUNT
+
+window = Tk() #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
+
+window.resizable(0,0)                         #THE WINDOW WILL NOT ENTER FULLSCREEN MODE
+window.resizable(width=FALSE, height=FALSE)   #THE USER CANNOT CHANGE THE SIZE OF THE LOGIN WINDOW
+window.title ("CMP BANKING SYSTEM")           #GIVING THE LOGIN WINDOW ITS NAME THAT WILL BE DISPLAYED IN THE BAR
+window.geometry("500x600")                    #CONFIGURING THE FIXED SIZE OF THE LOGIN WINDOW WHICH WILL ALWAYS BE THIS SIZE            
+window.configure(background='white')          #CONFIGURING THE BACKGROUND OF THE LOGIN WINDOW TO BE WHITE
+
+logo = PhotoImage(file="CMPBANKINGLOGO.png") #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
+
+Logo = Label (window, image=logo)            #CREATING THE LABEL THAT WILL DISPLAY THE CMP BANKING LOGO AT THE TOP OF THE LOGIN WINDOW
+
+S1 = Label(window, text=" ", background="white")                                                      #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
+Title = Label (window, text="CMP BANKING SYSTEM LOGIN", font='Helvetica 14 bold', background="white") #CREATING A TITLE FOR THE LOGIN WINDOW
+S2 = Label(window, text=" ", background="white")                                                      #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
+
+AccountNum = Label (window, text="Account Number:", font='Helvetica 10', background="white") #CREATING THE LABEL THAT WILL SAY 'Account Number' ABOVE THE ENTRY BOX
+accountnum = Entry (window, background="light grey")                                         #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR ACCOUNT NUMBER, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
+Username = Label (window, text="Username:", font='Helvetica 10', background="white")         #CREATING THE LABEL THAT WILL SAY 'Username' ABOVE THE ENTRY BOX
+username = Entry (window, background="light grey")                                           #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR USERNAME, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
+Password = Label (window, text="Password:", font='Helvetica 10', background="white")         #CREATING THE LABEL TAHT WILL SAY 'Password' ABOVE THE ENTRY BOX
+password = Entry (window, background="light grey", show="*")                                 #CREATING AN ENTRY BOX WHERE THE USER WILL INPUT THEIR PASSOWRD, IT WILL HAVE A LIGHT GREY BACKGROUND WITHIN THE BOX 
+S3 = Label(window, text=" ", background="white")                                             #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
+
+Login = Button (text="      LOGIN      ", fg="green", command=Login)                         #CREATING THE LOGIN BUTTON 
+
+S4 = Label(window, text=" ", background="white")                                                                                   #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
+signup = Label (window, text="No Account? Why Don't You Sign Up Today By Clicking Below!", font='Helvetica 8', background="white") #CREATING A LABEL THAT STATES A USER CAN SIGN UP FOR AN ACCOUNT
+SignUp = Button (text="     SIGN UP     ", fg="red", command=SignUpLoginWin)                                                       #CREATING THE SIGN UP BUTTON 
+
+Logo.pack()        #DISPLAYING THE LOGO LABEL
+S1.pack()          #DISPLAYING THE SPACE LABEL
+Title.pack()       #DISPLAYING THE TITLE OF THE WINDOW
+S2.pack()          #DISPLAYING THE SPACE LABEL
+AccountNum.pack()  #DISPLAYING THE ACCOUNT NUMBER LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+accountnum.pack()  #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR ACCOUNT NUMBER
+Username.pack()    #DISPLAYING THE USERNAME LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+username.pack()    #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR USERNAME
+Password.pack()    #DISPLAYING THE PASSWORD LABEL THAT WILL SIT ABOVE THE ENTRY BOX
+password.pack()    #DISPLAYING THE ENTRY BOX FOR THE USER TO INPUT THEIR PASSWORD
+S3.pack()          #DISPLAYING THE SPACE LABEL
+Login.pack()       #DISPLAYING THE LOGIN BUTTON 
+S4.pack()          #DISPLAYING THE SPACE LABEL
+signup.pack()      #DISPLAYING THE SIGN UP MESSAGE
+SignUp.pack()      #DISPLAYING THE SIGN UP BUTTON
+
+
 
 
 
