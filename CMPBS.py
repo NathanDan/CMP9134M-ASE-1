@@ -27,6 +27,8 @@ s.connect(("8.8.8.8", 80))                           #CONNECTS TO THE IP ADDRESS
 def MainMenu():
     
     Menu = Tk()                                      #CREATING THE TKINTER WINDOW THAT WILL HOUSE THE GUI TABS FOR THE MAIN APPLICATION
+    logo = PhotoImage(file="CMPBANKINGLOGO.png")     #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE MAIN BANKING SYSTEM TAB
+    Menu.iconphoto(False, logo)                      #SETTING THE CMP LOGO IN THE TOP BAR OF THE WINDOW
     Menu.title("CMP Banking System")                 #CREATING THE TITLE OF THE WINDOW 
     Menu.resizable(width=FALSE, height=FALSE)        #MAKING IT SO THAT THE WINDOW CANNOT BE CHANGE IN SIZE AND WILL BE THE SAME SIZE ON ALL SYSTEMS 
     Menu.geometry("1400x700")                        #SETTING THE WINDOW TO BE A SPECIFIC GEOMETRY FOR ALL SYSTEMS
@@ -43,8 +45,6 @@ def MainMenu():
         email = data[1]                             #TAKING THE 2ND ELEMENT OF THE FILE AND APPENDNING IT TO THE VARIABLE 'email' AS THIS IS THE USER'S EMAIL
         acc = data[2]                               #TAKING THE 3RD ELEMENT OF THE FILE AND APPENDNING IT TO THE VARIABLE 'acc' AS THIS IS THE USER'S ACCOUNT NUMBER AND WILL BE NEEDED LATER WHEN ACCESSING THE CORRECT ACCOUNT
         accname = data[3]                           #TAKING THE 4TH ELEMENT OF THE FILE AND APPENDNING IT TO THE VARIABLE 'accname' AS THIS IS THE USER'S ACCOUNT NUMBER AND WILL BE USED LATER 
-
-    logo = PhotoImage(file="CMPBANKINGLOGO.png")    #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE MAIN BANKING SYSTEM TAB
 
     S = Label(WelcomeTab, text=" ", background="white")                                                                                #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE INBETWEEN
     Logo = Label (WelcomeTab, image=logo)                                                                                              #CREATING THE LABEL THAT WILL DISPLAY THE CMP BANKING LOGO AT THE TOP OF THE MAIN BANKING SYSTEM TAB
@@ -77,7 +77,7 @@ def MainMenu():
     LogOutButton.place(x=1300, y=625)   #PLACING THE LOG OUT BUTTON IN THE BOTTOM LEFT OF THE TAB
     
     BalenceTab = ttk.Frame(style="W.TFrame") #CREATING AND CONFIGURING THE BALANCE TAB TO HAVE THE WHITE COLOUR SCHEME  
-    file = "acc\\"+"\\"+str(acc)+".csv"      #TAKING THE USERS ACCOUNT NUMBER THAT HAS BEEN PASSED THROUGH FROM THE LOGIN PROGRAM TO THE MAIN PROGRAM, THIS ACCOUNT NUMBER IS THEN ADDED TO A STRING TO CREATE THE FILE PATH OF THE USERS ACCOUNT DETAILS
+    file = "acc\\"+"\\"+str(acc)+".csv"      #TAKING THE USERS ACCOUNT NUMBER THAT HAS BEEN PASSED THROUGH FROM THE LOGIN TO THE MAIN, THIS ACCOUNT NUMBER IS THEN ADDED TO A STRING TO CREATE THE FILE PATH OF THE USERS ACCOUNT DETAILS
 
     def Balence():
 
@@ -95,7 +95,7 @@ def MainMenu():
         Title = Label(BalenceTab, text="Current Account Balance", font='Helvetica 14 bold', bg="white")          #CREATING THE SYSTEM DETAILS TITLE FOR THE TAB
         S1 = Label(BalenceTab, text=" ", background="white")                                                     #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE INBETWEEN
         Details = Label(BalenceTab,
-                        text="Below is the current account balance of the "+str(acc)+" "+str(accname)+" Account, along with the transactions in the past 20 days.",
+                        text="Below is the current account balance of the "+str(acc)+" "+str(accname)+" Account, along with the 20 past transactions.",
                         font='Helvetica 11', bg="white")                                                         #CREATING THE LABEL THAT ACTS AS A DESCRIPTION FOR THE TAB
         
         BalenceSheet = plt.Figure(figsize=(6,5),dpi=90)                                                          #CREATING THE FIGURE THAT WILL BE USED TO HOUSE THE GRAPH FOR THE BALANCE
@@ -111,13 +111,124 @@ def MainMenu():
 
         B1 = Button(BalenceTab, text="Refresh", command=Balence)                                                 #CREATING A BUTTON THAT WILL REFRESH THE GRAPH
 
-        S.pack()              #DISPLAYING THE SPACE LABEL
-        Title.pack()          #DISPLAYING THE TITLE OF THE TAB
-        S2.pack()             #DISPLAYING THE SPACE LABEL
-        Details.pack()        #DISPLAYING THE DESCRIPTION OF THE TAB
-        B1.place(x=680, y=80) #PLACING THE BUTTON WITHIN THE TAB 
+        S.pack()                    #DISPLAYING THE SPACE LABEL
+        Title.place(x=600, y=20)    #DISPLAYING THE TITLE OF THE TAB
+        S2.pack()                   #DISPLAYING THE SPACE LABEL
+        Details.place(x=400, y=50)  #DISPLAYING THE DESCRIPTION OF THE TAB
+        B1.place(x=680, y=80)       #PLACING THE BUTTON WITHIN THE TAB 
 
     Balence()                 #RUNNING THE FUNCTION SO IT IS ALREADY LOADED UP
+
+    DepositWithdrawTab = ttk.Frame(style="W.TFrame") #CREATING AND CONFIGURING THE DEPOSIT/WITHDRAW TAB TO HAVE THE WHITE COLOUR SCHEME 
+    
+    def DepositWithdraw():
+
+        def DepositFunc():
+
+            DateDep = time.strftime("%d-%b") #GATHERING THE CURRENT DATE IN A FORMAT LIKE THIS "10-Mar"
+            Int_Dep = int(deposit.get())     #CONVERTING THE DEPOSIT AMOUNT FROM THE ENTRY TO AN INT
+            Int_Data = int(data[-1])         #CONVERTING THE BALANCE FROM WITHIN THE FILE TO BE AN INT
+            NewBal = Int_Data + Int_Dep      #CALCULATING THE NEW BALANCE BY ADDING THE DEPOSIT AMOUNT TO THE BALANCE
+            
+            with open(file, "a") as f:       #WHILST THE FILE IS OPEN THE FOLLOWING WILL BE APPENED TO IT
+                f.write("\n")                #STARTING ON A NEW LINE SO THAT THE PREVIOUS TRANSACTIONS DO NOT GET MIXED UP
+                f.write(DateDep)             #WRITING THE CURRENT DATE TO THE ACCOUNT SO THE USER CAN SEE WHEN THEY DEPOSITED TO THE ACCOUNT  
+                f.write(",")                 #WRITING AN EMPTY SPACE BETWEEN THE USERS ENTRIES IN THE DATA FILE
+                f.write(str(NewBal))         #WRITING THE NEW BALANCE TO THE ACCOUNT    
+                f.close()                    #CLOSING THE FILE ONCE THE DATA HAS BEEN APPENEDED TO THE ACCOUNT
+                
+            DepositWithdraw()                #RELOADING THE MAIN TAB SO THE NEW BALANCE IS DISPLAYED
+
+        def WithdrawFunc():
+
+            DateWit = time.strftime("%d-%b") #GATHERING THE CURRENT DATE IN A FORMAT LIKE THIS "10-Mar"
+            Int_Wit = int(withdraw.get())    #CONVERTING THE WITHDRAW AMOUNT FROM THE ENTRY TO AN INT
+            Int_Data = int(data[-1])         #CONVERTING THE BALANCE FROM WITHIN THE FILE TO BE AN INT
+            NewBal = Int_Data - Int_Wit      #CALCULATING THE NEW BALANCE BY TAKING AWAY THE WITHDRAW AMOUNT FROM THE BALANCE
+
+            with open(file, "a") as f:       #WHILST THE FILE IS OPEN THE FOLLOWING WILL BE APPENED TO IT
+                f.write("\n")                #STARTING ON A NEW LINE SO THAT THE PREVIOUS TRANSACTIONS DO NOT GET MIXED UP
+                f.write(DateWit)             #WRITING THE CURRENT DATE TO THE ACCOUNT SO THE USER CAN SEE WHEN THEY WITHDREW FROM THE ACCOUNT 
+                f.write(",")                 #WRITING A COMMA BETWEEN THE TWO ENTRIES AS THE FILE HAS A CSV FORMAT
+                f.write(str(NewBal))         #WRITING THE NEW BALANCE TO THE ACCOUNT  
+                f.close()                    #CLOSING THE FILE ONCE THE DATA HAS BEEN APPENEDED TO THE ACCOUNT
+                
+            DepositWithdraw()                #RELOADING THE MAIN TAB SO THE NEW BALANCE IS DISPLAYED
+
+        def TransferFunc():
+
+            transaccnum = transferacc.get()                  #GETTING THE ACCOUNT NUMBER THE USER HAS ENTERED FOR THE 
+            TransFile = "acc\\"+"\\"+str(transaccnum)+".csv" #TAKING THE USERS TRANSFER ACCOUNT NUMBER THAT HAS BEEN PASSED THROUGH, THIS NUMBER IS THEN ADDED TO A STRING TO CREATE THE FILE PATH OF THE TRANSFER ACCOUNT DETAILS
+            for line in open(TransFile,"r").readlines():     #READING EACH LINE WITHIN THE 'temp' FILE AND ASSIGNING THE DATA TO VARIABLES BELOW
+                tranacc = line.split(',')                    #SPLITTING THE TEXT UP INSIDE THE FILE SO THEY CAN BE ACCESSED AND ASSIGNED: #READING THE CSV FILE THAT CONTAINS THE DATA 
+            TransLastBal = tranacc[-1]                       #GETTING THE LATEST BALANCE FROM THE ACCOUNT BY TAKING THE -1 OR LAST ELEMENT OF THE FILE
+        
+            DatetTans = time.strftime("%d-%b") #GATHERING THE CURRENT DATE IN A FORMAT LIKE THIS "10-Mar"
+            Int_Trans = int(transfer.get())    #CONVERTING THE WITHDRAW AMOUNT FROM THE ENTRY TO AN INT
+            Int_Data = int(data[-1])           #CONVERTING THE BALANCE FROM WITHIN THE FILE TO BE AN INT
+            NewBal = Int_Data - Int_Trans      #CALCULATING THE NEW BALANCE BY TAKING AWAY THE TRANSFERED AMOUNT FROM THE BALANCE
+
+            TransBal = int(TransLastBal) + int(transfer.get())      #CALCULATING THE NEW BALANCE BY ADDING THE TRANSFER AMOUNT TO THE BALANCE
+
+            with open(file, "a") as f:       #WHILST THE FILE IS OPEN THE FOLLOWING WILL BE APPENED TO IT
+                f.write("\n")                #STARTING ON A NEW LINE SO THAT THE PREVIOUS TRANSACTIONS DO NOT GET MIXED UP
+                f.write(DatetTans)           #WRITING THE CURRENT DATE TO THE ACCOUNT SO THE USER CAN SEE WHEN THEY TRANSFERED FROM THE ACCOUNT 
+                f.write(",")                 #WRITING A COMMA BETWEEN THE TWO ENTRIES AS THE FILE HAS A CSV FORMAT
+                f.write(str(NewBal))         #WRITING THE NEW BALANCE TO THE ACCOUNT  
+                f.close()                    #CLOSING THE FILE ONCE THE DATA HAS BEEN APPENEDED TO THE ACCOUNT
+
+            with open(TransFile, "a") as t:  #WHILST THE FILE IS OPEN THE FOLLOWING WILL BE APPENED TO IT
+                t.write("\n")                #STARTING ON A NEW LINE SO THAT THE PREVIOUS TRANSACTIONS DO NOT GET MIXED UP
+                t.write(DatetTans)           #WRITING THE CURRENT DATE TO THE ACCOUNT SO THE USER CAN SEE WHEN THEY TRANSFERED TO THE ACCOUNT 
+                t.write(",")                 #WRITING A COMMA BETWEEN THE TWO ENTRIES AS THE FILE HAS A CSV FORMAT
+                t.write(str(TransBal))       #WRITING THE NEW BALANCE TO THE ACCOUNT  
+                t.close()                    #CLOSING THE FILE ONCE THE DATA HAS BEEN APPENEDED TO THE ACCOUNT
+
+            DepositWithdraw()                #RELOADING THE MAIN TAB SO THE NEW BALANCE IS DISPLAYED
+            
+        for line in open(file,"r").readlines():   #READING EACH LINE WITHIN THE 'temp' FILE AND ASSIGNING THE DATA TO VARIABLES BELOW
+            data = line.split(',')                #SPLITTING THE TEXT UP INSIDE THE FILE SO THEY CAN BE ACCESSED AND ASSIGNED: #READING THE CSV FILE THAT CONTAINS THE DATA 
+        LastBal = data[-1]                        #GETTING THE LATEST BALANCE FROM THE ACCOUNT BY TAKING THE -1 OR LAST ELEMENT OF THE FILE
+        
+        Title = Label(DepositWithdrawTab, text="Deposit or Withdraw", font='Helvetica 14 bold', bg="white")                   #CREATING THE DEPOSIT OR WITHDRAW TITLE FOR THE TAB
+        Descp = Label(DepositWithdrawTab,
+                     text="Welcome to the Deposit or Withdraw section of the CMP Banking System. Here you can choose to Deposit to or Withdraw from your account.",
+                     font='Helvetica 11', bg="white")                                                                         #CREATING THE DESCRIPTION OF THE TAB THAT WILL GO UNDERNEATH THE TITLE
+        CurBalDep = Label(DepositWithdrawTab, text="Current Balance: £"+str(LastBal), font='Helvetica 11 bold', bg="white")   #CREATING THE LABEL THAT SHOWS THE USER THE CURRETN BALANCE WITHIN THE ACCOUNT
+        Deposit = Label(DepositWithdrawTab, text="Enter How Much You Would Like To Deposit", bg="white")                      #CREATING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO DEPOSIT 
+        deposit = Entry(DepositWithdrawTab, background="light grey")                                                          #CREATING THE ENTRY BOX FOR THE USER TO ENTER THE AMOUNT THEY WANT TO DEPOSIT
+        DepositButton = Button(DepositWithdrawTab, text="Deposit", command=DepositFunc)                                       #CREATING THE BUTTON THAT WILL RUN THE FUNCTION THAT WILL ACTUALLY DEPOSIT THE AMOUNT
+
+        CurBalWit = Label(DepositWithdrawTab, text="Current Balance: £"+str(LastBal), font='Helvetica 11 bold', bg="white")   #CREATING THE LABEL THAT SHOWS THE USER THE CURRETN BALANCE WITHIN THE ACCOUNT
+        Withdraw = Label(DepositWithdrawTab, text="Enter How Much You Would Like To Withdraw", bg="white")                    #CREATING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO WITHDRAW 
+        withdraw = Entry(DepositWithdrawTab, background="light grey")                                                         #CREATING THE ENTRY BOX FOR THE USER TO ENTER THE AMOUNT THEY WANT TO WITHDRAW
+        WithdrawButton = Button(DepositWithdrawTab, text="Withdraw", command=WithdrawFunc)                                    #CREATING THE BUTTON THAT WILL RUN THE FUNCTION THAT WILL ACTUALLY WITHDRAW THE AMOUNT
+
+        CurBalTra = Label(DepositWithdrawTab, text="Current Balance: £"+str(LastBal), font='Helvetica 11 bold', bg="white")   #CREATING THE LABEL THAT SHOWS THE USER THE CURRETN BALANCE WITHIN THE ACCOUNT
+        Transfer = Label(DepositWithdrawTab, text="Enter How Much You Would Like To Transfer", bg="white")                    #CREATING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO TRANSFER 
+        transfer = Entry(DepositWithdrawTab, background="light grey")                                                         #CREATING THE ENTRY BOX FOR THE USER TO ENTER THE AMOUNT THEY WANT TO TRANSFER
+        TransferACC = Label(DepositWithdrawTab, text="Enter The Account Number You Would Like To Transfer To", bg="white")    #CREATING THE LABEL THAT ASKS THE USER THE ACCOUNT THEY WANT TO TRANSFER TO
+        transferacc = Entry(DepositWithdrawTab, background="light grey")                                                      #CREATING THE ENTRY BOX FOR THE USER TO ENTER THE ACCOUNT THEY WANT TO TRANSFER TO
+        TransferButton = Button(DepositWithdrawTab, text="Transfer", command=TransferFunc)                                    #CREATING THE BUTTON THAT WILL RUN THE FUNCTION THAT WILL ACTUALLY TRANSFER THE AMOUNT
+         
+        Title.place(x=600, y=20)            #DISPLAYING THE TITLE OF THE TAB
+        Descp.place(x=200, y=50)            #DISPLAYING THE DESCRIPTION OF THE TAB UNDERNEATH THE TITLE
+        CurBalDep.place(x=120, y=100)       #DISPLAYING THE CURRENT BALANCE OF THE ACCOUNT
+        Deposit.place(x=120, y=120)         #DISPLAYING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO DEPOSIT
+        deposit.place(x=122, y=145)         #DISPLAYING THE ENTRY BOX FOR THE DEPOSIT AMOUNT
+        DepositButton.place(x=280, y=140)   #DISPLAYING THE BUTTON USED TO DEPOSIT THE MONEY
+        CurBalWit.place(x=920, y=100)       #DISPLAYING THE CURRENT BALANCE OF THE ACCOUNT
+        Withdraw.place(x=920, y=120)        #DISPLAYING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO WITHDRAW
+        withdraw.place(x=922, y=145)        #DISPLAYING THE ENTRY BOX FOR THE WITHDRAW AMOUNT
+        WithdrawButton.place(x=1080, y=140) #DISPLAYING THE BUTTON USED TO WITHDRAW THE MONEY
+        CurBalTra.place(x=920, y=200)       #DISPLAYING THE CURRENT BALANCE OF THE ACCOUNT
+        Transfer.place(x=920, y=220)        #DISPLAYING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO TRANSFER
+        transfer.place(x=922, y=245)        #DISPLAYING THE ENTRY BOX FOR THE TRANSFER AMOUNT
+        TransferACC.place(x=920, y=260)     #DISPLAYING THE LABEL THAT ASKS THE USER THE ACCOUNT THEY WANT TO TRANSFER TO
+        transferacc.place(x=922, y=285)     #DISPLAYING THE ENTRY BOX FOR THE ACCOUNT NUMBER
+        TransferButton.place(x=1080, y=280) #DISPLAYING THE BUTTON USED TO TRANSFER THE MONEY
+
+    DepositWithdraw()  #RUNNING THE FUNCTION SO IT IS ALREADY LOADED UP
     
     SysDetailsTab = ttk.Frame(style="W.TFrame") #CREATING AND CONFIGURING THE SYSTEM DETAILS TAB TO HAVE THE WHITE COLOUR SCHEME
 
@@ -141,7 +252,7 @@ def MainMenu():
 
         S.pack()                     #DISPLAYING THE SPACE LABEL
         Title.pack()                 #DISPLAYING THE TITLE OF THE TAB
-        S1.pack                      #DISPLAYING THE SPACE LABEL
+        S1.pack()                    #DISPLAYING THE SPACE LABEL
         Details.pack()               #DISPLAYING THE DESCRIPTION OF THE TAB
         S2.pack()                    #DISPLAYING THE SPACE LABEL
         SysTime.place(x=225, y=100)  #DISPLAYING THE SYSTEM TIME
@@ -154,11 +265,12 @@ def MainMenu():
         CurACC.place(x=800, y=200)   #DISPLAYING THE CURRENT ACCOUNT NUMBER
         
     SystemDetails()                  #RUNNING THE FUNCTION SO IT IS ALREADY LOADED UP
-    
-    tabControl.add(WelcomeTab, text='Welcome Page')       #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE WELCOME PAGE TAB
-    tabControl.add(BalenceTab, text='Balence Sheet')      #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE BALANCE SHEET TAB
-    tabControl.add(SysDetailsTab, text='System Details')  #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE SYSTEM DETAILS TAB
-    tabControl.pack(expand = 1, fill ="both")             #DISPLAYING THE TABS ALONG THE TOP
+        
+    tabControl.add(WelcomeTab, text='Welcome Page')             #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE WELCOME PAGE TAB
+    tabControl.add(BalenceTab, text='Balence Sheet')            #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE BALANCE SHEET TAB
+    tabControl.add(DepositWithdrawTab, text='Deposit/Withdraw') #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE Deposit/Withdraw TAB
+    tabControl.add(SysDetailsTab, text='System Details')        #CREATING THE TAB AT THE TOP OF THE PAGES TO GO TO THE SYSTEM DETAILS TAB
+    tabControl.pack(expand = 1, fill ="both")                   #DISPLAYING THE TABS ALONG THE TOP
 
 # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #  # SIGN UP WINDOW #
 
@@ -187,18 +299,15 @@ def SignUpApp():
             signupwin.destroy()                                                  #CLOSING THE SIGN UP WINDOW AS THE LOGIN WINDOW OPENS
             Login()                                                              #ONCE 'OK' HAS BEEN CLICKED THE LOGIN APPLICATION WILL BE STARTED
 
-
-    signupwin = Tk() #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
-
+    signupwin = Tk()                                 #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
+    logo = PhotoImage(file="CMPBANKINGLOGO.png")     #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
+    Logo = Label (signupwin, image=logo)             #CREATING THE LABEL THAT WILL DISPLAY THE CMP BANKING LOGO AT THE TOP OF THE LOGIN WINDOW
+    signupwin.iconphoto(False, logo)                 #SETTING THE CMP LOGO IN THE TOP BAR OF THE WINDOW
     signupwin.resizable(0,0)                         #THE WINDOW WILL NOT ENTER FULLSCREEN MODE
     signupwin.resizable(width=FALSE, height=FALSE)   #THE USER CANNOT CHANGE THE SIZE OF THE LOGIN WINDOW
     signupwin.title ("CMP BANKING SYSTEM SIGN UP")   #GIVING THE LOGIN WINDOW ITS NAME THAT WILL BE DISPLAYED IN THE BAR
     signupwin.geometry("500x700")                    #CONFIGURING THE FIXED SIZE OF THE LOGIN WINDOW WHICH WILL ALWAYS BE THIS SIZE            
     signupwin.configure(background='white')          #CONFIGURING THE BACKGROUND OF THE LOGIN WINDOW TO BE WHITE
-
-    logo = PhotoImage(file="CMPBANKINGLOGO.png")     #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
-
-    Logo = Label (signupwin, image=logo)             #CREATING THE LABEL THAT WILL DISPLAY THE CMP BANKING LOGO AT THE TOP OF THE LOGIN WINDOW
 
     S1 = Label(signupwin, text=" ", background="white")                                                        #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
     Title = Label (signupwin, text="CMP BANKING SYSTEM SIGN UP", font='Helvetica 16 bold', background="white") #CREATING A TITLE FOR THE LOGIN WINDOW
@@ -247,9 +356,7 @@ def SignUpApp():
     S3.pack()           #DISPLAYING THE SPACE LABEL
     SignUp.pack()       #DISPLAYING THE SIGN UP BUTTON
 
-
 # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #    # LOGIN WINDOW #
-
 
 TRYS = 0           #KEEPING COUNT OF HOW MANY TRYS THE USER HAS HAD WHEN LOGGING IN
 trys = 2           #USED TO CREATE A COUNT DOWN OF HOW MANY MORE ATTEMPTS THE USER HAS FOR THE LOG IN 
@@ -285,33 +392,32 @@ def Login():
             window.destroy()                                            #DESTROYS THE LOGIN WINDOW BEFORE OPENING THE MAIN APPLICATION
             MainMenu()                                                  #STARTING THE MAIN BANKING PROGRAM WITH THE USERS CREDENTIALS
             
-        elif uname != data[0] and pword != data[1] and accnum != data[4]:   #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET THE FOLLOWING STATEMENTS WILL COME INTO PLAY
+        elif uname != data[0] or pword != data[1] or accnum != data[4]:   #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET THE FOLLOWING STATEMENTS WILL COME INTO PLAY
             if trys == 0:                                                                                        #IF THE USER HAS 0 TRYS LEFT THEN THE FOLLOWING WILL TAKE PLACE
                 messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
-                         You have """+str(trys)+str(" attempts left! And Have been LOCKED OUT!") , icon="error") #DISPLAYING THE ERROR MESSAGE BOX STATING THEY HAVE BEEN LOCKED OUT
+                You have """+str(trys)+str(" attempts left! And Have been LOCKED OUT!") , icon="error")          #DISPLAYING THE ERROR MESSAGE BOX STATING THEY HAVE BEEN LOCKED OUT
                 window.destroy()                                                                                 #CLOSING THE LOGIN APPLICATION AFTER THE 'OK' HAS BEEN CLICKED ON THE MESSAGE BOX
                  
-            elif trys > 0:                                                                                       #IF THE USER HAS MORE THAN 0 TRYS LEFT THEN THE FOLLOWING ACTIONS TAKE PLACE
+            if trys > 0:                                                                                         #IF THE USER HAS MORE THAN 0 TRYS LEFT THEN THE FOLLOWING ACTIONS TAKE PLACE
                 messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
                          You have """+str(trys)+str(" attempts left!") , icon="error")                           #DISPLAYING THE ERROR MESSAGE BOX WITH ATTEMPTS LEFT
                 TRYS = TRYS+1                                                                                    #ADDS +1 TO THE 'TRYS' ARRAY TO KEEP COUNT
                 trys = trys-1                                                                                    #TAKES -1 AWAY FROM THE 'trys' ARRAY TO DISPLAY REMAINDER OF ATTMEPTS 
 
 def SignUpLoginWin():
-    window.destroy()             #CLOSING THE LOGIN APPLICATION
-    SignUpApp()#STARTING THE SIGN UP APPLICATION FOR THE USER TO SIGN UP IF THEY DO NOT HAVE AN ACCOUNT
+    
+    window.destroy() #CLOSING THE LOGIN APPLICATION
+    SignUpApp()      #STARTING THE SIGN UP APPLICATION FOR THE USER TO SIGN UP IF THEY DO NOT HAVE AN ACCOUNT
 
-window = Tk() #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
-
+window = Tk()                                 #DEFINING WHAT THE TKINTER WINDOW WILL BE DEFINED AS
+logo = PhotoImage(file="CMPBANKINGLOGO.png")  #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
+Logo = Label (window, image=logo)             #CREATING THE LABEL THAT WILL DISPLAY THE CMP BANKING LOGO AT THE TOP OF THE LOGIN WINDOW
+window.iconphoto(False, logo)                 #SETTING THE CMP LOGO IN THE TOP BAR OF THE WINDOW
 window.resizable(0,0)                         #THE WINDOW WILL NOT ENTER FULLSCREEN MODE
 window.resizable(width=FALSE, height=FALSE)   #THE USER CANNOT CHANGE THE SIZE OF THE LOGIN WINDOW
 window.title ("CMP BANKING SYSTEM")           #GIVING THE LOGIN WINDOW ITS NAME THAT WILL BE DISPLAYED IN THE BAR
 window.geometry("500x600")                    #CONFIGURING THE FIXED SIZE OF THE LOGIN WINDOW WHICH WILL ALWAYS BE THIS SIZE            
 window.configure(background='white')          #CONFIGURING THE BACKGROUND OF THE LOGIN WINDOW TO BE WHITE
-
-logo = PhotoImage(file="CMPBANKINGLOGO.png") #THIS IS THE PATH FOR THE IMAGE DISPLAYED WITHIN THE LOGIN WINDOW
-
-Logo = Label (window, image=logo)            #CREATING THE LABEL THAT WILL DISPLAY THE CMP BANKING LOGO AT THE TOP OF THE LOGIN WINDOW
 
 S1 = Label(window, text=" ", background="white")                                                      #CREATING A LABEL THAT WILL ACT AS A ONE LINE SPACE BETWEEN 
 Title = Label (window, text="CMP BANKING SYSTEM LOGIN", font='Helvetica 14 bold', background="white") #CREATING A TITLE FOR THE LOGIN WINDOW
