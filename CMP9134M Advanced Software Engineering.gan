@@ -40,8 +40,8 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="1" name="Project Duration" color="#8cb6ce" meeting="false" start="2023-02-21" duration="58" complete="24" thirdDate="2023-02-21" thirdDate-constraint="0" expand="true"/>
-        <task id="3" name="Assignment 1 Duration" color="#6666ff" meeting="false" start="2023-02-21" duration="28" complete="50" thirdDate="2023-02-21" thirdDate-constraint="0" priority="3" expand="true">
+        <task id="1" name="Project Duration" color="#8cb6ce" meeting="false" start="2023-02-21" duration="58" complete="26" thirdDate="2023-02-21" thirdDate-constraint="0" expand="true"/>
+        <task id="3" name="Assignment 1 Duration" color="#6666ff" meeting="false" start="2023-02-21" duration="28" complete="54" thirdDate="2023-02-21" thirdDate-constraint="0" priority="3" expand="true">
             <notes>
                 <![CDATA[This will include writting up of the document that will go alongside the program]]>
             </notes>
@@ -107,7 +107,7 @@ Planning Basic Functionalities:
         <task id="33" name="Design Discussion with Client" color="#00ff00" meeting="true" start="2023-03-13" duration="0" complete="100" thirdDate="2023-03-06" thirdDate-constraint="0" expand="true">
             <depend id="24" type="2" difference="0" hardness="Rubber"/>
         </task>
-        <task id="24" name="Design Adaptations and Improvements" color="#ff9900" meeting="false" start="2023-03-13" duration="1" complete="0" thirdDate="2023-03-06" thirdDate-constraint="0" expand="true">
+        <task id="24" name="Design Adaptations and Improvements" color="#ff9900" meeting="false" start="2023-03-13" duration="1" complete="100" thirdDate="2023-03-06" thirdDate-constraint="0" expand="true">
             <depend id="27" type="2" difference="0" hardness="Rubber"/>
         </task>
         <task id="27" name="Programming" color="#99ff66" meeting="false" start="2023-03-14" duration="4" complete="0" thirdDate="2023-03-07" thirdDate-constraint="0" expand="true"/>
