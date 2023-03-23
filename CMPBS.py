@@ -123,6 +123,62 @@ def MainMenu():
     
     def DepositWithdraw():
 
+        def AUTH():
+
+             DIGITS = int(auth.get())   #GATHERING THE 16-DIGIT CREDIT CARD NUMBER FROM THE ENTRY BOX
+             
+             if not LENcheck(DIGITS):                                                                   #IF THE CARD NUMBER'S DOES NOT EQUAL 16 THEN THE FOLLOWING WILL HAPPEN
+                 messagebox.showinfo("   ERROR!   ", "INVALID CREDIT CARD NUMBER LENGTH", icon="error") #DISPLAYING THE ERROR MESSAGE BOX INVALID CARD MESSAGE
+             else:                                                                                      #IF THE CARD'S NUMBER HAS 16 DIGITS THEN THE FOLLOWING WILL HAPPEN 
+                if not valid(DIGITS):                                                                   #IF THE CARD NUMBER'S FINAL SUM DOES NOT EQUAL 0 THEN THE FOLLOWING WILL HAPPEN      
+                    messagebox.showinfo("   ERROR!   ", "INVALID CREDIT CARD NUMBER", icon="error")     #DISPLAYING THE ERROR MESSAGE BOX WITH INVALID CARD MESSAGE 
+                if valid(DIGITS):                                                                       #IF THE CARD NUMBER'S FINAL SUM EQUALS 0 THEN THE FOLLOWING WILL HAPPEN    
+                    messagebox.showinfo("Deposit", "Deposit Made!")                                     #DISPLAYING THE DEPOSIT MESSAGE SO THE USER KNOWS THEY HAVE MADE THEIR DEPOSIT
+                    DepositFunc()                                                                       #RUNNING THE DEPOSIT FUCTION SO THAT FUNDS ARE ACTUALLY ADDED TO THE ACCOUNT
+        
+        def LENcheck(DIGITS):                    #THIS FUNCTION WILL CHECK THE LENGTH OF THE DIGITS TO MAKE SURE THEY ARE EQUAL TO 16
+            length = len(str((DIGITS)))          #DEFINING WHAT 'length' WILL BE AND IN THIS CASE IT IS THE DIGITS THAT HAVE BEEN ENTERED BY THE USER 
+            if (length == 16):                   #IF THE VALUE OF 'length' IS EQUAL TO 16 THEN THE FOLLOWING WILL TAKE PLACE  
+              return True                        #IT WILL RETURN THE VALUE OF TRUE SO THAT THE PROGRAM CAN THEN BEGIN THE CALCULATIONS 
+            else:                                #IF THE VALUE OF 'length' IS NOT EQUAL TO 16 THEN THE FOLLOWING WILL TAKE PLACE 
+              return False                       #IT WILL RETURN THE VALUE OF FALSE SO THAT THE PROGRAM WILL NOT COMPLETE ANY CALCULATIONS, RATHER IT WILL DISPLAY THE NOT VALID MESSAGE
+
+        def valid(DIGITS):                       #THIS IS THE FUNCTION THAT WILL COMPLETE THE CALCULATIONS TO SEE IF THE CARD NUMBER IS A VALID ONE 
+            card = DIGITS                        #TAKING THE DIGITS THE USER HAS ENTERED AND NOW ASSIGNING THE DIGITTS TO A NEW VARIABLE 
+            Digits = list((str(card)))           #THE VARIABLE THAT WAS CREATED ABOVE IS NOW BEING ASSIGNED AS A LIST AND STRING OF NUMBERS IN ANOTHER VARIABLE
+            oddSUM = 0                           #SETTING THE VALUE OF 'oddSUM' TO 0 AND THIS IS RESETING THE VALUE FOR THE CALCULATION TO TAKE PLACE
+            evenSUM = 0                          #SETTING THE VALUE OF 'evenSUM' TO 0 AND THIS IS RESETING THE VALUE FOR THE CALCULATION TO TAKE PLACE
+            EVENcount = 0                        #SETTING THE VALUE OF 'EVENcount' TO 0 AND THIS IS RESETING THE VALUE FOR THE CALCULATION TO TAKE PLACE
+            ODDcount = 0                         #SETTING THE VALUE OF 'ODDcount' TO 0 AND THIS IS RESETING THE VALUE FOR THE CALCULATION TO TAKE PLACE
+            totalSUM = 0                         #SETTING THE VALUE OF 'totalSUM' TO 0 AND THIS IS RESETING THE VALUE FOR THE CALCULATION TO TAKE PLACE
+            length = 0                           #SETTING THE VALUE OF 'length' TO 0 AND THIS IS RESETING THE VALUE FOR THE CALCULATION TO TAKE PLACE
+            for i in Digits:             
+              length += 1                        #CHANGING THE 'length' VARIABLE TO CREATE A COUNT THAT WILL ADD ONE FOR EACH DIGIT - THIS WILL KEEP TRACK OF THE LENGTH OF THE CARD NUMBER    
+            count = 0                            #BUT KEEPING THE COUNT AS 0 SO THAT THE PROGRAM CAN KEEP TRACK 
+            if length == 16:             
+              ODDcount = 15                      #CHANGING THE 'ODDcount' TO REPRESENT NEW COUNT FOR THE ODD DIGITS
+              EVENcount = 14                     #CHANGING THE 'EVENcount' TO REPRESENT NEW COUNT FOR THE EVEN DIGITS
+            if length == 15:             
+              ODDcount = 13                      #CHANGING THE 'ODDcount' TO REPRESENT NEW COUNT FOR THE ODD DIGITS
+              EVENcount = 14                     #CHANGING THE 'EVENcount' TO REPRESENT NEW COUNT FOR THE EVEN DIGITS 
+
+            while (count <= length-2):           #WHILE THE 'count' VARIABLE IS LOWER OR EQUAL TO THE 'length' VARIABLE BUT MINUS 2 THEN THE FOLLOWING WILL TAKE PLACE
+
+              evenSUM += int(Digits[EVENcount])  #TAKING THE 'evenSUM' AND ADDING IT TO THE DIGITS AND 'EVENcount' 
+              EVENcount -= 2                     #UPDATING THE 'EVENcount'   
+              
+              prod = 2 * int(Digits[ODDcount])   #CREATING A VARIABLE THAT IS 2 TIMES THE DIGITS AND 'ODDcount'
+              oddSUM += prod                     #UPDATING THE 'oddSUM' WITH THE 'prod' VARIABLE BY ADDING IT 
+              ODDcount -= 2                      #UPDATING THE 'ODDcount' TO BE WHATEVER IT IS MINUS 2   
+              count += 2                         #UPDATING THE 'count' TO BE WHATEVER IT IS PLUS 2
+
+            totalSUM = oddSUM + evenSUM          #THE FINAL OR 'totalSUM' IS MADE UP OF ADDING THE 'oddSUM' AND 'evenSUM' TOGETHER TO CREATE THE FINAL SUM  
+
+            if totalSUM % 10 == 0:               #IF THE FINAL SUM CAN BE DIVIDED BY 10 THEN THE FOLLOWING WILL TAKE PLACE  
+              return True                        #RETURNING THE TRUE VALUE SO THAT THE PROGRAM CAN DISPLAY THE VALID CARD MESSAGE
+            else:                                #IF THE FINAL SUM CANNOT BE DIVIDED BY 10 THEN THE FOLLOWING WILL TAKE PLACE 
+              return False                       #RETURNING THE FALSE VALUE SO THAT THE PROGRAM CAN DISPLAY THE INVALID CARD MESSAGE        
+
         def DepositFunc():
 
             DateDep = time.strftime("%d-%b") #GATHERING THE CURRENT DATE IN A FORMAT LIKE THIS "10-Mar"
@@ -197,8 +253,10 @@ def MainMenu():
         CurBalDep = Label(DepositWithdrawTab, text="Current Balance: £"+str(LastBal), font='Helvetica 11 bold', bg="white")   #CREATING THE LABEL THAT SHOWS THE USER THE CURRETN BALANCE WITHIN THE ACCOUNT
         Deposit = Label(DepositWithdrawTab, text="Enter How Much You Would Like To Deposit", bg="white")                      #CREATING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO DEPOSIT 
         deposit = Entry(DepositWithdrawTab, background="light grey")                                                          #CREATING THE ENTRY BOX FOR THE USER TO ENTER THE AMOUNT THEY WANT TO DEPOSIT
-        DepositButton = Button(DepositWithdrawTab, text="Deposit", command=DepositFunc)                                       #CREATING THE BUTTON THAT WILL RUN THE FUNCTION THAT WILL ACTUALLY DEPOSIT THE AMOUNT
-
+        CardAuth = Label(DepositWithdrawTab, text="Enter Your Card Number" , bg="white") #USE 4007702835532454 FOR TESTING    #CREATING THE LABEL THAT ASKS THE USER TO ENTER THEIR CARD NUMBER
+        auth = Entry(DepositWithdrawTab, background="light grey")                                                             #CREATING THE ENTRY BOX FOR THE USER TO ENTER THE CARD NUMBER
+        DepositButton = Button(DepositWithdrawTab, text="Deposit", command=AUTH)                                              #CREATING THE BUTTON THAT WILL RUN THE FUNCTION THAT WILL ACTUALLY CHECK THE CARD AND DEPOSIT THE AMOUNT
+        
         CurBalWit = Label(DepositWithdrawTab, text="Current Balance: £"+str(LastBal), font='Helvetica 11 bold', bg="white")   #CREATING THE LABEL THAT SHOWS THE USER THE CURRETN BALANCE WITHIN THE ACCOUNT
         Withdraw = Label(DepositWithdrawTab, text="Enter How Much You Would Like To Withdraw", bg="white")                    #CREATING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO WITHDRAW 
         withdraw = Entry(DepositWithdrawTab, background="light grey")                                                         #CREATING THE ENTRY BOX FOR THE USER TO ENTER THE AMOUNT THEY WANT TO WITHDRAW
@@ -216,7 +274,9 @@ def MainMenu():
         CurBalDep.place(x=120, y=100)       #DISPLAYING THE CURRENT BALANCE OF THE ACCOUNT
         Deposit.place(x=120, y=120)         #DISPLAYING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO DEPOSIT
         deposit.place(x=122, y=145)         #DISPLAYING THE ENTRY BOX FOR THE DEPOSIT AMOUNT
-        DepositButton.place(x=280, y=140)   #DISPLAYING THE BUTTON USED TO DEPOSIT THE MONEY
+        CardAuth.place(x=120, y=160)        #DISPLAYING THE CARD NUMBER LABEL
+        auth.place(x=122, y=185)            #DISPLAYING THE CARD NUMBER ENTRY BOX
+        DepositButton.place(x=280, y=180)   #DISPLAYING THE BUTTON USED TO DEPOSIT THE MONEY
         CurBalWit.place(x=920, y=100)       #DISPLAYING THE CURRENT BALANCE OF THE ACCOUNT
         Withdraw.place(x=920, y=120)        #DISPLAYING THE LABEL THAT ASKS THE USER HOW MUCH THEY WANT TO WITHDRAW
         withdraw.place(x=922, y=145)        #DISPLAYING THE ENTRY BOX FOR THE WITHDRAW AMOUNT
@@ -392,13 +452,13 @@ def Login():
             window.destroy()                                            #DESTROYS THE LOGIN WINDOW BEFORE OPENING THE MAIN APPLICATION
             MainMenu()                                                  #STARTING THE MAIN BANKING PROGRAM WITH THE USERS CREDENTIALS
             
-        elif uname != data[0] or pword != data[1] or accnum != data[4]:   #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET THE FOLLOWING STATEMENTS WILL COME INTO PLAY
+        elif uname != data[0] or pword != data[1] or accnum != data[4]: #IF THE USERNAME AND/OR PASSWORD DO NOT MATCH ANY OF THE USERNAME/PASSWORD SET THE FOLLOWING STATEMENTS WILL COME INTO PLAY
             if trys == 0:                                                                                        #IF THE USER HAS 0 TRYS LEFT THEN THE FOLLOWING WILL TAKE PLACE
                 messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
                 You have """+str(trys)+str(" attempts left! And Have been LOCKED OUT!") , icon="error")          #DISPLAYING THE ERROR MESSAGE BOX STATING THEY HAVE BEEN LOCKED OUT
                 window.destroy()                                                                                 #CLOSING THE LOGIN APPLICATION AFTER THE 'OK' HAS BEEN CLICKED ON THE MESSAGE BOX
                  
-            if trys > 0:                                                                                         #IF THE USER HAS MORE THAN 0 TRYS LEFT THEN THE FOLLOWING ACTIONS TAKE PLACE
+            elif trys > 0:                                                                                       #IF THE USER HAS MORE THAN 0 TRYS LEFT THEN THE FOLLOWING ACTIONS TAKE PLACE
                 messagebox.showinfo("   ERROR!   ", """  Your username and/or password was incorrect!                                                        
                          You have """+str(trys)+str(" attempts left!") , icon="error")                           #DISPLAYING THE ERROR MESSAGE BOX WITH ATTEMPTS LEFT
                 TRYS = TRYS+1                                                                                    #ADDS +1 TO THE 'TRYS' ARRAY TO KEEP COUNT
